@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediaViewer"
         mc:Ignorable="d"
-        Title="Media Viewer" Height="450" Width="800">
+        Title="Media Viewer" Height="450" Width="800" MinWidth="640" MinHeight="480">
     <Grid Background="#FF0A0A0A">
         <StackPanel AllowDrop="True" Drop="MediaView_Drop" DragOver="MediaView_DragOver" Background="#00D3D3D3" Panel.ZIndex="1"/>
         <MediaElement x:Name="MediaView" Margin="10,10,10,30" OpacityMask="Black"/>
@@ -15,9 +15,15 @@
             <Button x:Name="PreviousButton" Content="Prev" HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Height="20" Click="PreviousButton_Click"/>
         </Grid>
         <Grid x:Name="VolumeControlGrid" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150" Panel.ZIndex="2">
-            <Slider x:Name="VolumeSlider" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" Ticks="20"/>
+            <Slider x:Name="VolumeSlider" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" TickFrequency="0.1" />
             <Label x:Name="VolumeLabel" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
         </Grid>
-        <Label x:Name="DevLabel" Content="DEV" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Foreground="White"/>
+        <Label x:Name="DevLabel" Content="DEV" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Foreground="White" Visibility="Hidden"/>
+        <Grid Width="50" Height="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,155,0" Panel.ZIndex="2">
+            <Button x:Name="ClearButton" Content="Clear" Click="ClearButton_Click"/>
+        </Grid>
+        <Grid Width="340" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="24" Margin="0,0,0,5">
+            <ProgressBar x:Name="VideoLength" Foreground="White" Background="#FF3A3A3A" Margin="5,3,0,0"/>
+        </Grid>
     </Grid>
 </Window>
