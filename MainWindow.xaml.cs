@@ -23,6 +23,7 @@ namespace MediaViewer
     public partial class MainWindow : Window
     {
         bool IsMediaPlaying;
+        string previousFile;
         string currentPlayingFile;
         string nextFile;
 
@@ -92,10 +93,18 @@ namespace MediaViewer
             }
             else if(currentPlayingFile != nextFile)
             {
+                previousFile = currentPlayingFile;
                 currentPlayingFile = nextFile;
                 MediaView.Source = MediaView.Source = new Uri(currentPlayingFile);
             }
 
+        }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentPlayingFile == null || nextFile == null)
+                return;
+            MediaView.Source = MediaView.Source = new Uri(previousFile);
         }
     }
 }

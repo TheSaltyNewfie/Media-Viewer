@@ -7,14 +7,14 @@
         mc:Ignorable="d"
         Title="Media Viewer" Height="450" Width="800">
     <Grid Background="#FF0A0A0A">
-        <StackPanel Margin="10,10,10,30" AllowDrop="True" Drop="MediaView_Drop" DragOver="MediaView_DragOver" Background="#00D3D3D3"/>
+        <StackPanel AllowDrop="True" Drop="MediaView_Drop" DragOver="MediaView_DragOver" Background="#00D3D3D3" Panel.ZIndex="1"/>
         <MediaElement x:Name="MediaView" Margin="10,10,10,30" OpacityMask="Black"/>
-        <Grid x:Name="MediaControlGrid" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="100">
+        <Grid x:Name="MediaControlGrid" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="100" Panel.ZIndex="2">
             <Button x:Name="MediaStateButton" Content="> | |" HorizontalAlignment="Center" VerticalAlignment="Center" Width="30" Height="24" Click="MediaStateButton_Click"/>
             <Button x:Name="SkipButton" Content="Skip" HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Height="20" Click="SkipButton_Click" Margin="70,0,0,0"/>
-            <Button x:Name="PreviousButton" Content="Prev" HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Height="20" IsEnabled="False"/>
+            <Button x:Name="PreviousButton" Content="Prev" HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Height="20" Click="PreviousButton_Click"/>
         </Grid>
-        <Grid x:Name="VolumeControlGrid" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150">
+        <Grid x:Name="VolumeControlGrid" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="150" Panel.ZIndex="2">
             <Slider x:Name="VolumeSlider" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" Ticks="20"/>
             <Label x:Name="VolumeLabel" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
         </Grid>
