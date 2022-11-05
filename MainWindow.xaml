@@ -18,12 +18,13 @@
             <Slider x:Name="VolumeSlider" HorizontalAlignment="Right" VerticalAlignment="Center" Width="120" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" TickFrequency="0.1" />
             <Label x:Name="VolumeLabel" Content="0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White"/>
         </Grid>
-        <Label x:Name="DevLabel" Content="DEV" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Foreground="White" Visibility="Hidden"/>
+        <Label x:Name="DevLabel" Content="DEV" HorizontalAlignment="Right" Margin="0,0,250,0" VerticalAlignment="Bottom" Foreground="White"/>
         <Grid Width="50" Height="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,155,0" Panel.ZIndex="2">
             <Button x:Name="ClearButton" Content="Clear" Click="ClearButton_Click"/>
         </Grid>
-        <Grid Width="340" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="24" Margin="0,0,0,5">
-            <ProgressBar x:Name="VideoLength" Foreground="White" Background="#FF3A3A3A" Margin="5,3,0,0"/>
+        <Grid Width="340" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="24" Panel.ZIndex="2">
+            <Slider x:Name="VideoDurationSlider" Width="340" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
         </Grid>
     </Grid>
 </Window>

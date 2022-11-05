@@ -18,6 +18,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using WMPLib;
 
+
 namespace MediaViewer
 {
     /// <summary>
@@ -26,18 +27,20 @@ namespace MediaViewer
     public partial class MainWindow : Window
     {
         bool IsMediaPlaying;
-        string previousFile;
-        string currentPlayingFile;
-        string nextFile;
         List<string> fileQueue = new List<string>();
         int queuePosition = 0;
-        double length = 0.0;
+        double videoLength = 0.0;
+        double currentVideoPos = 0.0;
+        System.Threading.Thread slider;
 
         public MainWindow()
         {
             InitializeComponent();
             MediaView.LoadedBehavior = MediaState.Manual;
             IsMediaPlaying = false;
+            //slider = new System.Threading.Thread(updateSliderTime);
+            //slider.IsBackground = true;
+            //slider.Start();
         }
 
         private void MediaView_DragOver(object sender, DragEventArgs e)
@@ -69,6 +72,8 @@ namespace MediaViewer
                 MediaView.Source = new Uri(fileQueue[0]);
                 MediaView.Play();
                 IsMediaPlaying = true;
+                SetSliderTime();
+                DevLabel.Content = MediaView.DataContext.ToString();
             }
         }
 
@@ -79,7 +84,11 @@ namespace MediaViewer
                 return;
             }
 
-            if (!IsMediaPlaying)
+            if (currentVideoPos == videoLength)
+            {
+                MediaView.Source = new Uri(fileQueue[queuePosition]);
+            }
+            else if (!IsMediaPlaying)
             {
                 MediaView.Play();
                 IsMediaPlaying = true;
@@ -90,6 +99,8 @@ namespace MediaViewer
                 MediaView.Pause();
                 IsMediaPlaying = false;
             }
+
+            
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -111,7 +122,7 @@ namespace MediaViewer
             {
                 queuePosition += 1;
                 MediaView.Source = new Uri(fileQueue[queuePosition]);
-                //SetProgressBar();
+                SetSliderTime();
             }
             /*
             if (currentPlayingFile == null || nextFile == null)
@@ -137,7 +148,7 @@ namespace MediaViewer
 
             queuePosition -= 1;
             MediaView.Source = new Uri(fileQueue[queuePosition]);
-            //SetProgressBar();
+            SetSliderTime();
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -148,23 +159,37 @@ namespace MediaViewer
             Console.WriteLine("Cleared File Queue!");
         }
 
-        async private void SetProgressBar()
+        private void SetSliderTime()
         {
-            MediaView.MediaOpened += (s, e) => { VideoLength.Maximum = MediaView.NaturalDuration.TimeSpan.TotalSeconds; 
-                length = MediaView.NaturalDuration.TimeSpan.TotalSeconds; };
+            MediaView.MediaOpened += MediaView_MediaOpened;
+
+            //DevLabel.Content = VideoDurationSlider.Maximum;
+
+            //while(IsMediaPlaying)
+            //{
+              //  VideoDurationSlider.Value = currentVideoPos;
+            //}
+        }
+
+        private void MediaView_MediaOpened(object sender, RoutedEventArgs e)
+        {
+            videoLength = 0.0;
+            currentVideoPos = 0.0;
+
+            videoLength = MediaView.NaturalDuration.TimeSpan.TotalSeconds;
             
+            VideoDurationSlider.Maximum = videoLength;
+        }
 
-            VideoLength.Value = 0;
-
-            await Application.Current.Dispatcher.InvokeAsync(() =>
+        private void updateSliderTime()
+        {
+            while(true)
             {
-                while(MediaView.Position.TotalSeconds < length)
-                {
-                    VideoLength.Value = MediaView.Position.TotalSeconds;
-                }
-            });
-
-
+                this.Dispatcher.Invoke(() => {
+                    currentVideoPos = MediaView.Position.TotalSeconds;
+                    VideoDurationSlider.Value = currentVideoPos;
+                });
+            }
         }
     }
 }
